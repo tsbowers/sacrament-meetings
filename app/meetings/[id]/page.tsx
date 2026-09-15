@@ -1,28 +1,29 @@
 import { notFound } from "next/navigation";
-import { getMeetingById } from "@/lib/meetings-db";
 import MeetingDetail from "@/components/MeetingDetail";
+import { getBaseUrl } from "@/lib/get-base-url";
+import type { SacramentMeeting } from "@/lib/types";
 
 export default async function MeetingPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ print?: string }>;
 }) {
   const { id } = await params;
-  const { print } = await searchParams;
+  const baseUrl = await getBaseUrl();
 
-  const meeting = await getMeetingById(id);
-  if (!meeting) {
+  const res = await fetch(`${baseUrl}/api/meetings/${id}`, {
+    cache: "no-store",
+  });
+
+
+  // The API route returns 400 for a malformed id and 404 for a
+  // well-formed one that doesn't match a meeting — either way there's
+  // nothing to render here, so fall through to the not-found page.
+  if (!res.ok) {
     notFound();
   }
 
-  // TODO: ?print=1 currently just tweaks the wrapper class — decide if
-  // print mode needs its own route/layout instead once real styling
-  // for the printed program is worked out.
-  return (
-    <div className={print ? "print:p-0" : ""}>
-      <MeetingDetail meeting={meeting} />
-    </div>
-  );
+  const meeting: SacramentMeeting = await res.json();
+
+  return <MeetingDetail meeting={meeting} />;
 }

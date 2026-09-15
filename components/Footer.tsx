@@ -3,8 +3,8 @@ export default function Footer() {
     <footer className="mt-auto border-t border-black/10 py-6 dark:border-white/10">
       <div className="mx-auto max-w-3xl px-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
         <p>
-          &copy; {new Date().getFullYear()} TODO Ward. All talks and hymns
-          subject to change.
+          &copy; {new Date().getFullYear()} Willow Creek Ward. Program
+          details subject to change.
         </p>
       </div>
     </footer>

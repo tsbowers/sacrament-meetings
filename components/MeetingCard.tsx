@@ -1,13 +1,17 @@
 import Link from "next/link";
-import type { MeetingSummary } from "@/lib/types";
+import type { SacramentMeeting } from "@/lib/types";
+import { MEETING_TYPE_LABELS } from "@/lib/types";
 
-export default function MeetingCard({ meeting }: { meeting: MeetingSummary }) {
+export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) {
   const formattedDate = new Date(meeting.date).toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   });
+
+  const speakers = meeting.speakers.filter((s) => s.type === "speaker");
 
   return (
     <Link
@@ -18,16 +22,13 @@ export default function MeetingCard({ meeting }: { meeting: MeetingSummary }) {
         {formattedDate}
       </p>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        Presiding: {meeting.presiding}
+        {MEETING_TYPE_LABELS[meeting.meetingType]} &middot; Presiding:{" "}
+        {meeting.presiding}
       </p>
-      {meeting.speakers.length > 0 && (
+      {speakers.length > 0 && (
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Speaker{meeting.speakers.length > 1 ? "s" : ""}:{" "}
-          {meeting.speakers
-            .slice()
-            .sort((a, b) => a.order - b.order)
-            .map((s) => s.name)
-            .join(", ")}
+          Speaker{speakers.length > 1 ? "s" : ""}:{" "}
+          {speakers.map((s) => s.name).join(", ")}
         </p>
       )}
     </Link>

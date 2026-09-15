@@ -1,43 +1,43 @@
-// TODO: this is the shared shape for meeting data. Adjust freely as the
-// real agenda fields get nailed down — everything here is a best guess
-// based on a typical sacrament meeting program.
-
-export type HymnType = "opening" | "sacrament" | "rest" | "closing";
+export type MeetingType = "testimony" | "regular" | "stake" | "general";
 
 export interface Hymn {
   number: number;
   title: string;
-  type: HymnType;
 }
 
-export interface Speaker {
+export interface SpeakerItem {
   name: string;
-  topic?: string;
-  /** Order on the program, 1-indexed. */
-  order: number;
+  topic: string;
+  type: "speaker" | "musical-number";
 }
 
-export interface Meeting {
-  id: string;
-  /** ISO date string, e.g. "2026-09-14" — should always be a Sunday. */
+export interface WardBusinessItem {
+  description: string;
+}
+
+export interface SacramentMeeting {
+  id: number;
+  /** ISO date string: 'YYYY-MM-DD' — should always fall on a Sunday. */
   date: string;
+  meetingType: MeetingType;
   presiding: string;
   conducting: string;
-  chorister?: string;
-  organist?: string;
-  invocation?: string;
-  benediction?: string;
-  hymns: Hymn[];
-  speakers: Speaker[];
-  /** Free-text announcements shown at the top of the program. */
   announcements?: string[];
-  /** True once someone has actually filled this meeting in for real. */
-  isPlaceholder?: boolean;
+  openingHymn: Hymn;
+  openingPrayer: string;
+  wardBusiness: WardBusinessItem[];
+  stakeBusiness: boolean;
+  sacramentHymn: Hymn;
+  speakers: SpeakerItem[];
+  closingHymn: Hymn;
+  closingPrayer: string;
 }
 
-// Narrow view used by MeetingCard / the list page — avoids passing the
-// full agenda around when only a summary is needed.
-export type MeetingSummary = Pick<
-  Meeting,
-  "id" | "date" | "presiding" | "speakers"
->;
+// Human-readable labels for each MeetingType, used by MeetingCard /
+// MeetingDetail so the raw union value never leaks into the UI as-is.
+export const MEETING_TYPE_LABELS: Record<MeetingType, string> = {
+  testimony: "Fast & Testimony Meeting",
+  regular: "Sacrament Meeting",
+  stake: "Stake Conference",
+  general: "General Conference",
+};
