@@ -56,11 +56,13 @@ export default function MeetingDetail({ meeting }: { meeting: SacramentMeeting }
           <h2 id="business-heading" className="font-medium">
             Ward &amp; Stake Business
           </h2>
+
           {meeting.stakeBusiness && (
             <p className="text-zinc-700 dark:text-zinc-300 print:text-black">
               Stake business will be conducted.
             </p>
           )}
+
           {meeting.wardBusiness.length > 0 && (
             <ul className="list-inside list-disc text-zinc-700 dark:text-zinc-300 print:text-black">
               {meeting.wardBusiness.map((item, i) => (
@@ -72,19 +74,21 @@ export default function MeetingDetail({ meeting }: { meeting: SacramentMeeting }
       )}
 
       <section className="space-y-2 text-sm">
-        {meeting.openingHymn.title && (
+        {meeting.openingHymn && (
           <p>
             <span className="font-medium">Opening Hymn:</span> #
             {meeting.openingHymn.number} {meeting.openingHymn.title}
           </p>
         )}
+
         {meeting.openingPrayer && (
           <p>
             <span className="font-medium">Invocation:</span>{" "}
             {meeting.openingPrayer}
           </p>
         )}
-        {meeting.sacramentHymn.title && (
+
+        {meeting.sacramentHymn && (
           <p>
             <span className="font-medium">Sacrament Hymn:</span> #
             {meeting.sacramentHymn.number} {meeting.sacramentHymn.title}
@@ -93,10 +97,14 @@ export default function MeetingDetail({ meeting }: { meeting: SacramentMeeting }
       </section>
 
       {(speakers.length > 0 || musicalNumbers.length > 0) && (
-        <section aria-labelledby="program-heading" className="space-y-1 text-sm">
+        <section
+          aria-labelledby="program-heading"
+          className="space-y-1 text-sm"
+        >
           <h2 id="program-heading" className="font-medium">
             Program
           </h2>
+
           {meeting.speakers.map((item, i) =>
             item.type === "speaker" ? (
               <p key={i}>
@@ -114,12 +122,13 @@ export default function MeetingDetail({ meeting }: { meeting: SacramentMeeting }
       )}
 
       <section className="space-y-2 text-sm">
-        {meeting.closingHymn.title && (
+        {meeting.closingHymn && (
           <p>
             <span className="font-medium">Closing Hymn:</span> #
             {meeting.closingHymn.number} {meeting.closingHymn.title}
           </p>
         )}
+
         {meeting.closingPrayer && (
           <p>
             <span className="font-medium">Benediction:</span>{" "}

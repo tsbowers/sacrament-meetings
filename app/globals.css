@@ -1,37 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+--background: #f4edcf;
+--foreground: #26351f;
+
+--hyrule-green: #31572c;
+--forest-green: #4f772d;
+--deep-green: #1f3d24;
+--hyrule-gold: #c9a227;
+--gold-light: #e6c75a;
+--parchment: #f4edcf;
+--parchment-light: #fff9e6;
+--earth-brown: #76532b;
+--brown-dark: #49351f;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+--color-background: var(--background);
+--color-foreground: var(--foreground);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+--color-hyrule-green: var(--hyrule-green);
+--color-forest-green: var(--forest-green);
+--color-deep-green: var(--deep-green);
+--color-hyrule-gold: var(--hyrule-gold);
+--color-gold-light: var(--gold-light);
+--color-parchment: var(--parchment);
+--color-parchment-light: var(--parchment-light);
+--color-earth-brown: var(--earth-brown);
+--color-brown-dark: var(--brown-dark);
+
+--font-sans: var(--font-geist-sans);
+--font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+background: var(--background);
+color: var(--foreground);
+font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Printed meeting programs shouldn't include the persistent chrome —
-   only the agenda itself (see MeetingDetail's print:hidden button and
-   print:text-black overrides). */
+
 @media print {
-  header,
-  nav,
-  footer {
-    display: none !important;
-  }
+header,
+nav,
+footer {
+display: none !important;
+}
+
+body {
+background: white;
+color: black;
+}
 }
