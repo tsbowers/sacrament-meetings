@@ -24,14 +24,3 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-
-/* Printed meeting programs shouldn't include the persistent chrome —
-   only the agenda itself (see MeetingDetail's print:hidden button and
-   print:text-black overrides). */
-@media print {
-  header,
-  nav,
-  footer {
-    display: none !important;
-  }
-}
