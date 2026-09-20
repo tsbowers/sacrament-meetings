@@ -100,13 +100,13 @@ const meetings: SacramentMeeting[] = [
     announcements: [
       "No regularly scheduled sacrament meeting — watch or attend General Conference sessions.",
     ],
-    openingHymn: false,
+    openingHymn: {},
     openingPrayer: "",
     wardBusiness: [],
     stakeBusiness: false,
-    sacramentHymn: false,
+    sacramentHymn: {},
     speakers: [],
-    closingHymn: false,
+    closingHymn: {},
     closingPrayer: "",
   },
 ];
