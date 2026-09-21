@@ -16,9 +16,9 @@ function mostRecentSundayIso(): string {
   return sunday.toISOString().slice(0, 10); // 'YYYY-MM-DD'
 }
 
-export default function CurrentMeetingPage() {
+export default async function CurrentMeetingPage() {
   const sundayIso = mostRecentSundayIso();
-  const [meeting] = getMeetings(sundayIso);
+  const [meeting] = await getMeetings(sundayIso);
 
   // No meeting scheduled for this Sunday in the data yet — fall back
   // to the full list rather than 404ing on a page the nav links to.
