@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import MeetingDetail from "@/components/MeetingDetail";
 import { getBaseUrl } from "@/lib/get-base-url";
@@ -15,7 +16,6 @@ export default async function MeetingPage({
     cache: "no-store",
   });
 
-
   // The API route returns 400 for a malformed id and 404 for a
   // well-formed one that doesn't match a meeting — either way there's
   // nothing to render here, so fall through to the not-found page.
@@ -25,5 +25,18 @@ export default async function MeetingPage({
 
   const meeting: SacramentMeeting = await res.json();
 
-  return <MeetingDetail meeting={meeting} />;
+  return (
+    <div className="space-y-6">
+      <MeetingDetail meeting={meeting} />
+
+      <div className="text-center print:hidden">
+        <Link
+          href={`/meetings/${meeting.id}/edit`}
+          className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+        >
+          Edit this meeting
+        </Link>
+      </div>
+    </div>
+  );
 }

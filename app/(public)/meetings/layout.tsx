@@ -17,6 +17,12 @@ export default function MeetingsLayout({ children }: { children: ReactNode }) {
         >
           Jump to This Sunday
         </Link>
+        <Link
+          href="/meetings/new"
+          className="text-zinc-500 hover:text-black dark:text-zinc-400 dark:hover:text-zinc-50"
+        >
+          Add a Meeting
+        </Link>
       </nav>
       {children}
     </div>
