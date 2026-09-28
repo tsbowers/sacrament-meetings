@@ -5,7 +5,7 @@ const sql = neon(`${process.env.DATABASE_URL}`);
 
 export const PAGE_SIZE = 5;
 
-function mapRow(row: any): SacramentMeeting {
+function mapRow(row: Record<string, unknown>): SacramentMeeting {
   return {
     id: row.id,
     date: row.date,
@@ -21,7 +21,7 @@ function mapRow(row: any): SacramentMeeting {
     speakers: row.speakers,
     closingHymn: row.closing_hymn,
     closingPrayer: row.closing_prayer,
-  };
+  } as SacramentMeeting;
 }
 
 export async function getMeetings(options?: {
