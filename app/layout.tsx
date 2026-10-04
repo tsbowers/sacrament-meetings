@@ -16,8 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Willow Creek Ward | Sacrament Meeting Planner",
+  title: {
+    default: "Willow Creek Ward | Sacrament Meeting Planner",
+    template: "%s | Willow Creek Ward",
+  },
   description: "This week's sacrament meeting program and speaking assignments.",
+  metadataBase: new URL("https://sacrament-meetings-lime.vercel.app"),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

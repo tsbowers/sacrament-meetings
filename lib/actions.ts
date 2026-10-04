@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { AuthError } from "next-auth";
+import { auth, signIn } from "@/auth";
 import {
   createMeeting as createMeetingInDb,
   updateMeeting as updateMeetingInDb,
@@ -105,6 +107,41 @@ export type MeetingFormState = {
 };
 
 // ---------------------------------------------------------------------------
+// Authentication / authorization
+// ---------------------------------------------------------------------------
+
+/**
+ * Owner-only model: this app has a single authorized owner account, so any
+ * valid session is the owner. Every mutation calls this first -- the client
+ * can never be trusted, because Server Actions can be invoked directly.
+ */
+async function requireOwnerSession() {
+  const session = await auth();
+  if (!session?.user) throw new Error("Not authenticated");
+  return session;
+}
+
+/** Login form action (used with useActionState in components/login-form.tsx). */
+export async function authenticate(
+  _prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid email or password.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error; // re-throw so Next.js handles the redirect correctly
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -193,6 +230,8 @@ export async function createMeeting(
   _prevState: MeetingFormState,
   formData: FormData
 ): Promise<MeetingFormState> {
+  await requireOwnerSession();
+
   const parsed = MeetingFormSchema.safeParse(rawValues(formData));
 
   if (!parsed.success) {
@@ -218,6 +257,8 @@ export async function updateMeeting(
   _prevState: MeetingFormState,
   formData: FormData
 ): Promise<MeetingFormState> {
+  await requireOwnerSession();
+
   const parsed = MeetingFormSchema.safeParse(rawValues(formData));
 
   if (!parsed.success) {
@@ -242,6 +283,8 @@ export async function updateMeeting(
 }
 
 export async function deleteMeeting(formData: FormData): Promise<void> {
+  await requireOwnerSession();
+
   const parsedId = z.coerce
     .number()
     .int()

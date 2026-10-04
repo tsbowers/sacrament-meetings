@@ -3,7 +3,13 @@ import { deleteMeeting } from "@/lib/actions";
 import type { SacramentMeeting } from "@/lib/types";
 import { MEETING_TYPE_LABELS } from "@/lib/types";
 
-export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) {
+export default function MeetingCard({
+  meeting,
+  isOwner = false,
+}: {
+  meeting: SacramentMeeting;
+  isOwner?: boolean;
+}) {
   const formattedDate = new Date(meeting.date).toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -35,6 +41,7 @@ export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) 
         )}
       </Link>
 
+      {isOwner && (
       <div className="flex items-center gap-4 border-t border-black/10 px-4 py-2 text-sm dark:border-white/10">
         <Link
           href={`/meetings/${meeting.id}/edit`}
@@ -54,6 +61,7 @@ export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) 
           </button>
         </form>
       </div>
+      )}
     </div>
   );
 }

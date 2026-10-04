@@ -117,7 +117,7 @@ export async function createMeeting(input: MeetingInput): Promise<number> {
       announcements, opening_hymn, opening_prayer, ward_business,
       stake_business, sacrament_hymn, speakers, closing_hymn, closing_prayer)
     VALUES (${input.date}, ${input.meetingType}, ${input.presiding},
-      ${input.conducting}, ${JSON.stringify(input.announcements)},
+      ${input.conducting}, ${input.announcements ?? []},
       ${JSON.stringify(input.openingHymn)}, ${input.openingPrayer},
       ${JSON.stringify(input.wardBusiness)}, ${input.stakeBusiness},
       ${JSON.stringify(input.sacramentHymn)}, ${JSON.stringify(input.speakers)},
@@ -137,7 +137,7 @@ export async function updateMeeting(
       meeting_type = ${input.meetingType},
       presiding = ${input.presiding},
       conducting = ${input.conducting},
-      announcements = ${JSON.stringify(input.announcements)},
+      announcements = ${input.announcements ?? []},
       opening_hymn = ${JSON.stringify(input.openingHymn)},
       opening_prayer = ${input.openingPrayer},
       ward_business = ${JSON.stringify(input.wardBusiness)},

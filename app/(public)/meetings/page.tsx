@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { auth } from "@/auth";
 import MeetingCard from "@/components/MeetingCard";
 import MeetingSearch from "@/components/MeetingSearch";
 import Pagination from "@/components/Pagination";
@@ -9,6 +11,12 @@ interface MeetingsResponse {
   totalPages: number;
 }
 
+export const metadata: Metadata = {
+  title: "All Meetings",
+  description:
+    "Browse and search past and upcoming sacrament meeting programs for Willow Creek Ward.",
+};
+
 export default async function MeetingsPage({
   searchParams,
 }: {
@@ -16,6 +24,7 @@ export default async function MeetingsPage({
 }) {
   const { query, page } = await searchParams;
   const baseUrl = await getBaseUrl();
+  const session = await auth();
 
   const params = new URLSearchParams();
   if (query) params.set("query", query);
@@ -41,7 +50,11 @@ export default async function MeetingsPage({
       ) : (
         <div className="space-y-3">
           {meetings.map((meeting) => (
-            <MeetingCard key={meeting.id} meeting={meeting} />
+            <MeetingCard
+              key={meeting.id}
+              meeting={meeting}
+              isOwner={!!session?.user}
+            />
           ))}
         </div>
       )}
